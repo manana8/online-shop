@@ -1,6 +1,4 @@
 <?php
-//session_start();
-//echo session_id();
 
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 if ($requestMethod === 'POST') {
@@ -9,9 +7,9 @@ if ($requestMethod === 'POST') {
 
         if (isset($data['login'])) {
             $login = $data['login'];
-//            if (strlen($login) < 4) {
-//                $errors['login'] = 'логин должен содержать более 4 символов';
-//            }
+            if (strlen($login) < 4) {
+                $errors['login'] = 'логин должен содержать более 4 символов';
+            }
         }  else {
             $errors['login'] = 'Введите логин';
         }
@@ -41,7 +39,10 @@ if ($requestMethod === 'POST') {
             $errors['login'] = 'Неправильный логин или пароль';
         } else {
             if ($password === $data['password']) {
-                echo 'Welcome!';
+                //setcookie('user_id', $data['id']);
+                session_start();
+                $_SESSION['user_id'] = $data['id'];
+                header('location: /main.php');
             } else {
                 $errors['login'] = 'Неправильный логин или пароль';
             }
