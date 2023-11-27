@@ -1,45 +1,24 @@
-<?php
-
-
-//if (isset($_COOKIE['user_id'])) {
-    //print_r($_COOKIE['user_id']);
-
-session_start();
-if (isset($_SESSION['user_id'])) {
-    //print_r($_SESSION['user_id']);
-
-    $pdo = new PDO("pgsql:host=db;dbname=postgres", "dbuser", "dbpwd");
-
-    $stmt = $pdo->query("SELECT * FROM products");
-    $products = $stmt->fetchAll();
-//    print_r($products);
-//    exit();
-} else {
-    header('location: /login.php');
-}
-
-?>
-
 <body>
 <h3>Catalog</h3>
 <div class="container">
     <div class="card-deck">
         <?php foreach ($products as $product): ?>
-        <div class="card text-center">
-            <div class="card-header">
-                Hit!
-                <a href="#">
-                    <img class="card-img-top" src=<?php echo $product['image']; ?> alt="Card image">
-                    <div class="card-body">
-                        <p class="card-text text-muted"><?php echo $product['name']; ?> </p>
-                        <a><h5 class="card-title">Description!</h5></a>
-                        <div class="card-footer">
-                            <?php echo $product['price'] . " rub"; ?>
+            <div class="card text-center">
+                <div class="card-header">
+                    Hit!
+                    <a href="#">
+                        <img class="card-img-top" src=<?php echo $product['image_link']; ?> alt="Card image">
+                        <div class="card-body">
+                            <p class="card-text text-muted"><?php echo $product['name']; ?> </p>
+                            <a><h5 class="card-title">Description!</h5></a>
+                            <div class="card-footer">
+                                <?php echo $product['price'] . " p"; ?>
+                            </div>
+                            <a href="/add-product"><button type="submit" class="btn">Add to cart</button>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
-        </div>
         <?php endforeach; ?>
     </div>
 </div>
@@ -119,6 +98,19 @@ if (isset($_SESSION['user_id'])) {
         font-size: 20px;
         background-color: white;
     }
+    .btn {
+        background-color: aliceblue;
+        color: darkblue;
+        padding: 12px 20px;
+        font-size: 20px;
+        margin: 16px 0;
+        width: 80%;
+        opacity: 50;
+    }
 
+    .btn:hover {
+        color: maroon;
+        opacity: 100;
+    }
 </style>
 
