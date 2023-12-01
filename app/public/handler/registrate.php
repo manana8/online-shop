@@ -65,7 +65,7 @@ if ($requestMethod === 'POST') {
 
         $data = $stmt->fetchAll();
 
-        header('location: /main-page');;
+        header('location: /login');;
     }
 }
 

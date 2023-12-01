@@ -10,7 +10,7 @@ if (isset($_SESSION['user_id'])) {
     $pdo = new PDO("pgsql:host=db;dbname=postgres", "dbuser", "dbpwd");
 
     $stmt = $pdo->query("SELECT * FROM products");
-    $products = $stmt->fetchAll();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 //    print_r($products);
 //    exit();
 } else {

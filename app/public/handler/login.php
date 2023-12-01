@@ -44,7 +44,7 @@ if ($requestMethod === 'POST') {
                 $_SESSION['user_id'] = $data['id'];
                 header('location: /main-page');
             } else {
-                $errors['login'] = 'Неправильный логин или пароль';
+                $errors['password'] = 'Неправильный логин или пароль';
             }
         }
     }
