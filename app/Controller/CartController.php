@@ -4,28 +4,28 @@
 
 class CartController
 {
-    public function addProduct(): void
+    public function addProduct(array $requestData): void
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         if ($requestMethod === 'POST') {
-            $errors = $this->validateProduct($_POST);
+            $errors = $this->validateProduct($requestData);
 
             if (empty($errors)) {
                 session_start();
                 if (isset($_SESSION['user_id'])) {
                     $userId = $_SESSION['user_id'];
-                    $productId = $_POST['product_id'];
-                    $quantity = $_POST['quantity'];
+                    $productId = $requestData['product_id'];
+                    $quantity = $requestData['quantity'];
 
                     //$pdo = new PDO("pgsql:host=db;dbname=postgres", "dbuser", "dbpwd");
                     require_once '../Model/Cart.php';
                     $cartModel = new Cart();
-                    $cart = $cartModel->getOne($userId);
+                    $cart = $cartModel->getOneByUserId($userId);
 
                     if (empty($cart)) {
                         $cartModel->create($userId);
 
-                        $cart = $cartModel->getOne($userId);
+                        $cart = $cartModel->getOneByUserId($userId);
                     }
 
                     require_once '../Model/CartProduct.php';

@@ -4,16 +4,16 @@
 
 class UserController
 {
-    public function registrate() {
+    public function registrate(array $requestData) {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         if ($requestMethod === 'POST') {
 
-            $errors = $this->validateRegistrate($_POST);
+            $errors = $this->validateRegistrate($requestData);
 
             if (empty($errors)) {
-                $name = $_POST['name'];
-                $email = $_POST['email'];
-                $password = $_POST['psw'];
+                $name = $requestData['name'];
+                $email = $requestData['email'];
+                $password = $requestData['psw'];
 
                 require_once '../Model/User.php';
                 $registrationModel = new User();
@@ -72,19 +72,19 @@ class UserController
         return $errors;
     }
 
-    public function login()
+    public function login(array $requestData)
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         if ($requestMethod === 'POST') {
-            $errors = $this->validateLogin($_POST);
+            $errors = $this->validateLogin($requestData);
 
             if (empty($errors)) {
-                $login = $_POST['login'];
-                $password = $_POST['password'];
+                $login = $requestData['login'];
+                $password = $requestData['password'];
 
                 require_once '../Model/User.php';
                 $loginModel = new User();
-                $data = $loginModel->getOne($login);
+                $data = $loginModel->getOneByEmail($login);
 
                 if (empty($data)) {
                     $errors['login'] = 'Неправильный логин или пароль';
