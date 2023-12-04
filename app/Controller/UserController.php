@@ -4,7 +4,8 @@
 
 class UserController
 {
-    public function registrate(array $requestData) {
+    public function registrate(array $requestData)
+    {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         if ($requestMethod === 'POST') {
 
@@ -15,7 +16,7 @@ class UserController
                 $email = $requestData['email'];
                 $password = $requestData['psw'];
 
-                require_once '../Model/User.php';
+                //require_once '../Model/User.php';
                 $registrationModel = new User();
                 $registrationModel->create($name, $email, $password);
 
@@ -72,7 +73,7 @@ class UserController
         return $errors;
     }
 
-    public function login(array $requestData)
+    public function login(array $requestData): void
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         if ($requestMethod === 'POST') {
@@ -82,17 +83,19 @@ class UserController
                 $login = $requestData['login'];
                 $password = $requestData['password'];
 
-                require_once '../Model/User.php';
-                $loginModel = new User();
-                $data = $loginModel->getOneByEmail($login);
+//                require_once '../Model/User.php';
+//                $loginModel = new User();
+//                $data = $loginModel->getOneByEmail($login);
+                $data = User::getOneByEmail($login);
+                print_r($data); die();
 
                 if (empty($data)) {
                     $errors['login'] = 'Неправильный логин или пароль';
                 } else {
-                    if ($password === $data['password']) {
+                    if ($password === $data->getPassword()) {
                         //setcookie('user_id', $data['id']);
                         session_start();
-                        $_SESSION['user_id'] = $data['id'];
+                        $_SESSION['user_id'] = $data->getId();
                         header('location: /main-page');
                     } else {
                         $errors['password'] = 'Неправильный логин или пароль';

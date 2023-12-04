@@ -2,20 +2,30 @@
 
 $requestUri = $_SERVER['REQUEST_URI'];
 
+$autoload1 = function (string $className) {
+    $path = "../Controller/$className.php";
+    if (file_exists($path)) {
+        require_once $path;
+    }
+};
+
+$autoload2 = function (string $className) {
+    require_once "../Model/$className.php";
+};
+
+spl_autoload_register($autoload1);
+spl_autoload_register($autoload2);
+
 if ($requestUri === '/login') {
-    require_once '../Controller/UserController.php';
     $userController = new UserController();
     $userController->login($_POST);
 } elseif ($requestUri === '/registrate') {
-    require_once '../Controller/UserController.php';
     $userController = new UserController();
     $userController->registrate($_POST);
 } elseif ($requestUri === '/main-page') {
-    require_once '../Controller/MainController.php';
     $mainController = new MainController();
     $mainController->mainPage();
 } elseif ($requestUri === '/add-product') {
-    require_once '../Controller/CartController.php';
     $cartController = new CartController();
     $cartController->addProduct($_POST);
 } else {
