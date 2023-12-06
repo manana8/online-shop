@@ -1,6 +1,7 @@
 <?php
 
-//namespace Model;
+namespace Model;
+
 class Cart extends Model
 {
     private int $id;
@@ -18,7 +19,7 @@ class Cart extends Model
         $stmt = self::getPDO()->prepare("SELECT * FROM carts WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $userId]);
 
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch();
 
         if (empty($data)) {
             return null;

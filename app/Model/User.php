@@ -1,5 +1,6 @@
 <?php
 
+namespace Model;
 class User extends Model
 {
     private int $id;
@@ -22,23 +23,23 @@ class User extends Model
         $stmt->execute(['name' => $name, 'email' => $email, 'password' => $password]);
     }
 
-//    public static function getAll(): array|null
-//    {
-//        $stmt = self::getPDO()->prepare("SELECT * FROM users");
-//        $stmt->execute();
-//
-//        $users = $stmt->fetchAll();
-//
-//        if (empty($users)) {
-//            return null;
-//        }
-//
-//        $arr = [];
-//        foreach ($users as $user) {
-//            $arr[] = new self($user['id'], $user['name'], $user['email'], $user['password']);
-//        }
-//        return $arr;
-//    }
+    public static function getAll(): array|null
+    {
+        $stmt = self::getPDO()->prepare("SELECT * FROM users");
+        $stmt->execute();
+
+        $users = $stmt->fetchAll();
+
+        if (empty($users)) {
+            return null;
+        }
+
+        $arr = [];
+        foreach ($users as $user) {
+            $arr[] = new self($user['id'], $user['name'], $user['email'], $user['password']);
+        }
+        return $arr;
+    }
 
     public static function getOneByEmail(string $email): User|null
     {

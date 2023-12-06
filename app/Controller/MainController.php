@@ -1,6 +1,8 @@
 <?php
 
-//namespace Controller;
+namespace Controller;
+
+use Model\Product;
 
 class MainController
 {

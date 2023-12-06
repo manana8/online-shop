@@ -1,5 +1,7 @@
 <?php
 
+namespace Model;
+
 class CartProduct extends Model
 {
     private int $id;

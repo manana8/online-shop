@@ -1,5 +1,7 @@
 <?php
 
+namespace Model;
+
 class Product extends Model
 {
     private int $id;
@@ -18,7 +20,7 @@ class Product extends Model
     public static function getAll(): null|array
     {
         $stmt = self::getPDO()->query("SELECT * FROM products");
-        $allProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $allProducts = $stmt->fetchAll();
 
         if (empty($allProducts)) {
             return null;

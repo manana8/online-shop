@@ -1,12 +1,19 @@
 <?php
 
-//namespace Controller;
+namespace Controller;
+
+use Model\Cart;
+use Model\CartProduct;
+use Request\Request;
+
+//import class
 
 class CartController
 {
-    public function addProduct(array $requestData): void
+    public function addProduct(Request $request): void
     {
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        $requestData = $request->getBody();
+        $requestMethod = $request->getMethod();
         if ($requestMethod === 'POST') {
             $errors = $this->validateProduct($requestData);
 

@@ -1,12 +1,16 @@
 <?php
 
-//namespace Controller;
+namespace Controller;
+
+use Model\User;
+use Request\Request;
 
 class UserController
 {
-    public function registrate(array $requestData)
+    public function registrate(Request $request)
     {
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        $requestData = $request->getBody();
+        $requestMethod = $request->getMethod();
         if ($requestMethod === 'POST') {
 
             $errors = $this->validateRegistrate($requestData);
@@ -72,9 +76,10 @@ class UserController
         return $errors;
     }
 
-    public function login(array $requestData): void
+    public function login(Request $request): void
     {
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        $requestData = $request->getBody();
+        $requestMethod = $request->getMethod();;
         if ($requestMethod === 'POST') {
             $errors = $this->validateLogin($requestData);
 
