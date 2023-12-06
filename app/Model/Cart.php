@@ -9,14 +9,13 @@ class Cart extends Model
 
     public function __construct(int $id, string $name, string $userId)
     {
-        parent::__construct();
         $this->id = $id;
         $this->name = $name;
         $this->userId = $userId;
     }
     public static function getOneByUserId(int $userId): Cart|null
     {
-        $stmt = self::getPDO()->prepare("SELECT id FROM carts WHERE user_id = :user_id");
+        $stmt = self::getPDO()->prepare("SELECT * FROM carts WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $userId]);
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -33,7 +32,8 @@ class Cart extends Model
         if ($name === null) {
             $name = "cart_$userId";
         }
-        $stmt = $this->pdo->prepare("INSERT INTO carts (name, user_id) VALUES (:name, :user_id)");
+
+        $stmt = self::getPDO()->prepare("INSERT INTO carts (name, user_id) VALUES (:name, :user_id)");
         $stmt->execute(['name' => $name, 'user_id' => $userId]);
     }
 

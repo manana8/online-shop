@@ -6,7 +6,7 @@ class Model
 
     public static function getPDO()
     {
-        //shablon odinochka because create only one object
+        //shablon almost as odinochka because create only one object
         if (isset(self::$pdo)) {
             return self::$pdo;
         }

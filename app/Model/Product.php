@@ -2,9 +2,52 @@
 
 class Product extends Model
 {
-    public static function getAll(): bool|array
+    private int $id;
+    private string $name;
+    private float $price;
+    private string $imageLink;
+
+    public function __construct(int $id, string $name, float $price, string $imageLink)
     {
-        $stmt = $this->pdo->query("SELECT * FROM products");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->id = $id;
+        $this->name = $name;
+        $this->price = $price;
+        $this->imageLink= $imageLink;
+    }
+
+    public static function getAll(): null|array
+    {
+        $stmt = self::getPDO()->query("SELECT * FROM products");
+        $allProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($allProducts)) {
+            return null;
+        }
+
+        $arr = [];
+        foreach ($allProducts as $product) {
+            $arr[] = new self($product['id'], $product['name'], $product['price'], $product['image_link']);
+        }
+        return $arr;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function getImageLink(): string
+    {
+        return $this->imageLink;
     }
 }

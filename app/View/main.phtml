@@ -8,13 +8,13 @@
                     <div class="card-header">
                         Hit!
                         <a href="#">
-                            <img class="card-img-top" src=<?php echo $product['image_link']; ?> alt="Card image">
+                            <img class="card-img-top" src=<?php echo $product->getImageLink(); ?> alt="Card image">
                             <div class="card-body">
-                                <p class="card-text text-muted"><?php echo $product['name']; ?> </p>
+                                <p class="card-text text-muted"><?php echo ucfirst($product->getName()); ?> </p>
                                 <a><h5 class="card-title">Description!</h5></a>
                                 <div class="card-footer">
-                                    <?php echo $product['price'] . " p"; ?>
-                                    <input type="text" placeholder="product_id" name="product_id" hidden="" value="<?php echo $product['id']; ?>">
+                                    <?php echo $product->getPrice() . " p"; ?><br>
+                                    <input type="text" placeholder="product_id" name="product_id" hidden="" value="<?php echo $product->getId(); ?>">
                                     <input type="text" placeholder="quantity" name="quantity">
                                 </div>
                                 <a href="/add-product"><button type="submit" class="btn">Add to cart</button>

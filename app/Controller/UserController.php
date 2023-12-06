@@ -17,10 +17,10 @@ class UserController
                 $password = $requestData['psw'];
 
                 //require_once '../Model/User.php';
-                $registrationModel = new User();
-                $registrationModel->create($name, $email, $password);
+//                $registrationModel = new User();
+                User::create($name, $email, $password);
 
-                $data = $registrationModel->getAll();
+//                $data = User::getAll();
 
                 header('location: /login');;
             }
@@ -60,7 +60,6 @@ class UserController
             $errors['psw'] = 'Введите пароль';
         }
 
-
         if (isset($data['psw-repeat'])) {
             $passwordRep = $data['psw-repeat'];
             if ($password !== $passwordRep) {
@@ -87,7 +86,7 @@ class UserController
 //                $loginModel = new User();
 //                $data = $loginModel->getOneByEmail($login);
                 $data = User::getOneByEmail($login);
-                print_r($data); die();
+//                print_r($data); die();
 
                 if (empty($data)) {
                     $errors['login'] = 'Неправильный логин или пароль';

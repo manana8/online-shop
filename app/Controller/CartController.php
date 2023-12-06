@@ -18,19 +18,20 @@ class CartController
                     $quantity = $requestData['quantity'];
 
                     //$pdo = new PDO("pgsql:host=db;dbname=postgres", "dbuser", "dbpwd");
-                    require_once '../Model/Cart.php';
-                    $cartModel = new Cart();
-                    $cart = $cartModel->getOneByUserId($userId);
+//                    require_once '../Model/Cart.php';
+//                    $cartModel = new Cart();
+                    $cart = Cart::getOneByUserId($userId);
 
                     if (empty($cart)) {
-                        $cartModel->create($userId);
+                        Cart::create($userId);
 
-                        $cart = $cartModel->getOneByUserId($userId);
+                        $cart = Cart::getOneByUserId($userId);
                     }
 
-                    require_once '../Model/CartProduct.php';
-                    $cartProductModel = new CartProduct();
-                    $cartProductModel->create($cart, $productId, $quantity);
+//                    require_once '../Model/CartProduct.php';
+//                    $cartProductModel = new CartProduct();
+//                    $cartProductModel->create($cart, $productId, $quantity);
+                    CartProduct::create($cart->getId(), $productId, $quantity);
 
                     header('location: /main-page');
                 }

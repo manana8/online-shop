@@ -18,24 +18,38 @@ class User extends Model
 
     public static function create(string $name, string $email, string $password): void
     {
-        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+        $stmt = self::getPDO()->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
         $stmt->execute(['name' => $name, 'email' => $email, 'password' => $password]);
     }
 
-    public static function getAll(): bool|array
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM users");
-        $stmt->execute();
+//    public static function getAll(): array|null
+//    {
+//        $stmt = self::getPDO()->prepare("SELECT * FROM users");
+//        $stmt->execute();
+//
+//        $users = $stmt->fetchAll();
+//
+//        if (empty($users)) {
+//            return null;
+//        }
+//
+//        $arr = [];
+//        foreach ($users as $user) {
+//            $arr[] = new self($user['id'], $user['name'], $user['email'], $user['password']);
+//        }
+//        return $arr;
+//    }
 
-        return $stmt->fetchAll();
-    }
-
-    public static function getOneByEmail(string $email): User
+    public static function getOneByEmail(string $email): User|null
     {
         $stmt = self::getPDO()->prepare("SELECT * FROM users WHERE email=:email");
         $stmt->execute(['email' => $email]);
 
         $data = $stmt->fetch();
+
+        if (empty($data)) {
+            return null;
+        }
 
         return new self($data['id'], $data['name'], $data['email'], $data['password']);
     }
