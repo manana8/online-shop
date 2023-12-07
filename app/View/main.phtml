@@ -1,4 +1,13 @@
 <body>
+<header>
+    <form action="/user-cart" method="POST">
+        <div class="header-cart">
+            <button type="submit" class="btn-cart">
+                <img class="img-cart" src="https://cdn-icons-png.flaticon.com/512/263/263142.png">
+            </button>
+        </div>
+    </form>
+</header>
 <h3>Catalog</h3>
 <div class="container">
     <div class="card-deck">
@@ -35,7 +44,7 @@
 
     h3 {
         font-size: 2.2rem;
-        margin-top: 80px;
+        /*margin-top: 80px;*/
         text-align: center;
         color: navy;
     }
@@ -115,6 +124,24 @@
     .btn:hover {
         color: maroon;
         opacity: 100;
+    }
+
+    header {
+        height:60px;
+        width: 100%;
+        background: lightblue;
+        text-align: right;
+        padding-top:10px;
+    }
+
+    .img-cart {
+        width: 45px;
+    }
+
+    .header-cart {
+        position:relative;
+        display:inline-block;
+        margin-right:40px;
     }
 </style>
 

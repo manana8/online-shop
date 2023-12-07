@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Couchbase\View;
 use Model\Cart;
 use Model\CartProduct;
 use Request\Request;
@@ -60,5 +61,19 @@ class CartController
         }
 
         return $errors;
+    }
+
+    public function test() {
+        session_start();
+        $userId = $_SESSION['user_id'];
+        $cart = Cart::getOneByUserId($userId);
+        $cartId = $cart->getId();
+        $test = CartProduct::getAllByCartId($cartId);
+//        foreach ($test as $test1) {
+//            $test2 = $test1->getProductId();
+//            echo $test2;
+//        }
+//         die();
+        require_once '../View/cart.phtml';
     }
 }

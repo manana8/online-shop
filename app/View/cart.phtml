@@ -1,0 +1,154 @@
+<body>
+<section class="checkout-details">
+    <div class="checkout-details-inner">
+        <div class="checkout-lists">
+            <div class="card">
+                <?php foreach ($test as $test1): ?>
+                <div class="card-image"><img src="<?php print_r($test1->getCartId()); ?>" alt=""></div>
+                <div class="card-details">
+                    <div class="card-name"><?php print_r($test1->getProductId()); ?></div>
+                    <div class="card-price">$54.99 </div>
+                    <div class="card-wheel">
+                        <button>-</button>
+                        <span><?php print_r($test1->getQuantity()); ?> </span>
+                        <button>+</button>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="checkout-shipping">
+            <h6>Shipping</h6>
+            <p>$19</p>
+        </div>
+        <div class="checkout-total">
+            <h6>Total</h6>
+            <p>$148.98</p>
+        </div>
+    </div>
+</section>
+</body>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        font-family: "Poppins", sans-serif;
+        height: 100vh;
+        width: 70%;
+        margin: 0px auto;
+        padding: 50px 0px 0px;
+        color: #4E5150;
+    }
+
+    .card {
+        width: 100%;
+        display: flex;
+        column-gap: 15px;
+    }
+
+    .card-image {
+        width: 35%;
+    }
+
+    img {
+        width: 100%;
+        object-fit: fill;
+        border-radius: 10px;
+    }
+
+    .card-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-name {
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .card-price {
+        font-size: 10px;
+        font-weight: 500;
+        color: #F2994A;
+        margin-top: 5px;
+    }
+
+    span {
+        color: #4E5150;
+        margin-left: 10px;
+    }
+
+    .card-wheel {
+        margin-top: 17px;
+        border: .2px solid #4e515085;
+        width: 90px;
+        padding: 8px 8px;
+        border-radius: 10px;
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    button {
+        background: #E0E0E0;
+        color: #828282;
+        width: 15px;
+        height: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0;
+        cursor: pointer;
+        border-radius: 3px;
+        font-weight: 500;
+    }
+
+    .checkout-shipping, .checkout-total {
+        display: flex;
+        font-size: 16px;
+        padding: 5px 0px;
+        border-top: 1px solid #BDBDBD;
+        justify-content: space-between;
+    }
+
+    p {
+        font-size: 10px;
+        font-weight: 500;
+    }
+
+    footer {
+        height: 5%;
+        color: #BDBDBD;
+        display: -ms-grid;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+    }
+
+    a {
+    text-decoration: none;
+    color: inherit;
+    }
+
+    main {
+    column-gap: 70px;
+    }
+
+    body {
+        width: 92%;
+    }
+
+    main {
+        flex-direction: column-reverse;
+        height: auto;
+        margin-bottom: 50px;
+    }
+
+    footer {
+    height: 10%;
+    }
+</style>

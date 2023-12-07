@@ -23,6 +23,26 @@ class CartProduct extends Model
         $stmt->execute(['cart_id' => $cartId, 'product_id' => $productId, 'quantity' => $quantity]);
     }
 
+    public static function getAllByCartId(int $cartId): ?array
+    {
+        $stmt = self::getPDO()->prepare("SELECT * FROM cart_products WHERE cart_id=:cart_id");
+        $stmt->execute(['cart_id' => $cartId]);
+
+        $datas = $stmt->fetchAll();
+
+        if (empty($datas)) {
+            return null;
+        }
+
+        $arr = [];
+        foreach ($datas as $data) {
+            $arr[] = new self($data['id'], $data['cart_id'], $data['product_id'], $data['quantity']);
+        }
+        return $arr;
+
+//        return
+    }
+
     public function getId(): int
     {
         return $this->id;

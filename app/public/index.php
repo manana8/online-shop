@@ -34,6 +34,10 @@ $routes = [
         'class' => CartController::class,
         'method' => 'addProduct',
     ],
+    '/user-cart' => [
+        'class' => CartController::class,
+        'method' => 'test',
+    ],
 ];
 
 $requestUri = $_SERVER['REQUEST_URI'];
