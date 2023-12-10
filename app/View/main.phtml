@@ -12,7 +12,7 @@
 <div class="container">
     <div class="card-deck">
         <?php foreach ($products as $product): ?>
-            <form action="/add-product" method="POST">
+            <form action="/main-page" method="POST">
                 <div class="card text-center">
                     <div class="card-header">
                         Hit!
@@ -26,7 +26,7 @@
                                     <input type="text" placeholder="product_id" name="product_id" hidden="" value="<?php echo $product->getId(); ?>">
                                     <input type="text" placeholder="quantity" name="quantity">
                                 </div>
-                                <a href="/add-product"><button type="submit" class="btn">Add to cart</button>
+                                <a href="/main-page"><button type="submit" class="btn">Add to cart</button>
                             </div>
                         </a>
                     </div>

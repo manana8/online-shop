@@ -3,6 +3,9 @@
 use Controller\CartController;
 use Controller\MainController;
 use Controller\UserController;
+use Request\LoginRequest;
+use Request\ProductRequest;
+use Request\RegistrateRequest;
 use Request\Request;
 
 $autoload = function (string $className) {
@@ -19,40 +22,76 @@ spl_autoload_register($autoload);
 
 $routes = [
     '/login' => [
-        'class' => UserController::class,
-        'method' => 'login',
+        'GET' => [
+            'class' => UserController::class,
+            'method' => 'getLoginForm',
+        ],
+        'POST'=>[
+            'class' => UserController::class,
+            'method' => 'postLogin',
+            'request' => LoginRequest::class,
+        ]
     ],
     '/registrate' => [
-        'class' => UserController::class,
-        'method' => 'registrate',
+        'GET' => [
+            'class' => UserController::class,
+            'method' => 'getRegistrateForm',
+        ],
+        'POST'=>[
+            'class' => UserController::class,
+            'method' => 'postRegistrate',
+            'request' => RegistrateRequest::class,
+        ]
     ],
     '/main-page' => [
-        'class' => MainController::class,
-        'method' => 'mainPage',
+        'GET' => [
+            'class' => MainController::class,
+            'method' => 'mainPage',
+        ],
+        'POST'=> [
+            'class' => CartController::class,
+            'method' => 'addProduct',
+            'request' => ProductRequest::class,
+        ]
     ],
-    '/add-product' => [
-        'class' => CartController::class,
-        'method' => 'addProduct',
-    ],
+//    '/add-product' => [
+//        'POST'=> [
+//            'class' => CartController::class,
+//            'method' => 'addProduct',
+//            'request' => ProductRequest::class,
+//        ]
+//    ],
     '/user-cart' => [
-        'class' => CartController::class,
-        'method' => 'test',
+        'POST'=> [
+            'class' => CartController::class,
+            'method' => 'userCart',
+            ]
     ],
 ];
 
 $requestUri = $_SERVER['REQUEST_URI'];
 
 if (isset($routes[$requestUri])) {
-    $handler = $routes[$requestUri];
-    $class = $handler['class'];
-    $method = $handler['method'];
-
-    $obj = new $class();
     $requestMethod = $_SERVER['REQUEST_METHOD'];
-    $request = new Request($requestMethod);
-    $request->setBody($_POST);
+    $routeMethods = $routes[$requestUri]; //GET or POST
+    if (isset($routeMethods[$requestMethod])) {
+        $handler = $routeMethods[$requestMethod];
+        $class = $handler['class'];
+        $method = $handler['method'];
 
-    $obj->$method($request);
+        $obj = new $class();
+        if (empty($handler['request'])) {
+            $request = new Request($requestMethod, $_POST);
+        } else {
+            $requestClass = $handler['request'];
+            $request = new $requestClass($requestMethod, $_POST);
+        }
+        $obj->$method($request);
+
+    } else {
+        echo "The method $routeMethods for $requestUri is not supported!";
+    }
+
 } else {
     require_once '../View/error404.html';
 }

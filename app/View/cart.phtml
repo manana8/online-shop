@@ -3,27 +3,23 @@
     <div class="checkout-details-inner">
         <div class="checkout-lists">
             <div class="card">
-                <?php foreach ($test as $test1): ?>
-                <div class="card-image"><img src="<?php print_r($test1->getCartId()); ?>" alt=""></div>
+                <?php foreach ($products as $product): ?>
+                <div class="card-image"><img src="<?php echo $product->getImageLink(); ?>" alt=""></div>
                 <div class="card-details">
-                    <div class="card-name"><?php print_r($test1->getProductId()); ?></div>
-                    <div class="card-price">$54.99 </div>
+                    <div class="card-name"><?php echo ucfirst($product->getName()); ?></div>
+                    <div class="card-price"><?php echo $product->getPrice() . " rub"; ?></div>
                     <div class="card-wheel">
                         <button>-</button>
-                        <span><?php print_r($test1->getQuantity()); ?> </span>
+                        <span> <?php echo $cartProduct->getQuantity(); ?></span>
                         <button>+</button>
                     </div>
                 </div>
                 <?php endforeach; ?>
             </div>
         </div>
-        <div class="checkout-shipping">
-            <h6>Shipping</h6>
-            <p>$19</p>
-        </div>
         <div class="checkout-total">
             <h6>Total</h6>
-            <p>$148.98</p>
+            <p><?php echo $sum = $product->getPrice(); ?></p>
         </div>
     </div>
 </section>
@@ -66,12 +62,12 @@
     }
 
     .card-name {
-        font-size: 12px;
+        font-size: 30px;
         font-weight: 500;
     }
 
     .card-price {
-        font-size: 10px;
+        font-size: 30px;
         font-weight: 500;
         color: #F2994A;
         margin-top: 5px;
@@ -107,7 +103,7 @@
         font-weight: 500;
     }
 
-    .checkout-shipping, .checkout-total {
+    .checkout-total {
         display: flex;
         font-size: 16px;
         padding: 5px 0px;
