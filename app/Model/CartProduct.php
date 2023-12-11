@@ -36,11 +36,9 @@ class CartProduct extends Model
 
         $arr = [];
         foreach ($datas as $data) {
-            $arr[] = new self($data['id'], $data['cart_id'], $data['product_id'], $data['quantity']);
+            $arr[$data['product_id']] = new self($data['id'], $data['cart_id'], $data['product_id'], $data['quantity']);
         }
         return $arr;
-
-//        return
     }
 
     public function getId(): int

@@ -33,10 +33,12 @@ class Product extends Model
         return $arr;
     }
 
-    public static function getAllById(int $id): array|null
+    public static function getAllByIds(array $ids): array|null
     {
-        $stmt = self::getPDO()->prepare("SELECT * FROM products WHERE id=:id");
-        $stmt->execute(['id' => $id]);
+        $ids = implode(', ', $ids);
+
+        $stmt = self::getPDO()->prepare("SELECT * FROM products WHERE id IN (:ids)");
+        $stmt->execute(['ids' => 2]);
 
         $allProducts = $stmt->fetchAll();
 

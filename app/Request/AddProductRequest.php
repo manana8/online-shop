@@ -2,7 +2,7 @@
 
 namespace Request;
 
-class ProductRequest extends Request
+class AddProductRequest extends Request
 {
     public function validate(): array
     {

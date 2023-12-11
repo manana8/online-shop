@@ -6,14 +6,14 @@ use Couchbase\View;
 use Model\Cart;
 use Model\CartProduct;
 use Model\Product;
-use Request\ProductRequest;
+use Request\AddProductRequest;
 use Request\Request;
 
 //import class
 
 class CartController
 {
-    public function addProduct(ProductRequest $request): void
+    public function addProduct(AddProductRequest $request): void
     {
         $errors = $request->validate();
 
@@ -42,12 +42,16 @@ class CartController
                 CartProduct::create($cart->getId(), $productId, $quantity);
 
                 header('location: /main-page');
+            } else {
+                header('location: /login');
             }
         }
     }
 
-    public function userCart() {
+    public function getCart(): void
+    {
         session_start();
+        //check users
         $userId = $_SESSION['user_id'];
         $cart = Cart::getOneByUserId($userId);
         $cartId = $cart->getId();
@@ -56,9 +60,9 @@ class CartController
 
         foreach ($cartProducts as $cartProduct) {
             $productIds[] = $cartProduct->getProductId();
-        }
+        } // print_r($productIds); die();
 
-        $products = Product::getAllById((int)$productIds);
+        $products = Product::getAllByIds($productIds);
 //        print_r($products); die();
 
 

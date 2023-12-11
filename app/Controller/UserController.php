@@ -22,14 +22,15 @@ class UserController
             $name = $requestData['name'];
             $email = $requestData['email'];
             $password = $requestData['psw'];
+            $hash = password_hash($password, PASSWORD_DEFAULT);//Hash of password
 
             //require_once '../Model/User.php';
 //                $registrationModel = new User();
-            User::create($name, $email, $password);
+            User::create($name, $email, $hash);
 
 //                $data = User::getAll();
 
-            header('location: /login');;
+            header('location: /login');
         }
         require_once '../View/registrate.phtml';
     }
@@ -58,7 +59,7 @@ class UserController
             if (empty($data)) {
                 $errors['login'] = 'Неправильный логин или пароль';
             } else {
-                if ($password === $data->getPassword()) {
+                if (password_verify($password, $data->getPassword())) {
                     //setcookie('user_id', $data['id']);
                     session_start();
                     $_SESSION['user_id'] = $data->getId();
