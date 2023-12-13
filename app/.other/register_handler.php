@@ -145,7 +145,7 @@ if (empty($errors)) {
     }
 
     /* Set a style for the submit button */
-    .registerbtn {
+    .orderbtn {
         background-color: #04AA6D;
         color: white;
         padding: 16px 20px;
@@ -156,7 +156,7 @@ if (empty($errors)) {
         opacity: 0.9;
     }
 
-    .registerbtn:hover {
+    .orderbtn:hover {
         opacity: 1;
     }
 

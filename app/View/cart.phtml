@@ -1,28 +1,22 @@
 <body>
-<section class="checkout-details">
-    <div class="checkout-details-inner">
-        <div class="checkout-lists">
-            <div class="card">
-                <?php foreach ($products as $product): ?>
-                <div class="card-image"><img src="<?php echo $product->getImageLink(); ?>" alt=""></div>
-                <div class="card-details">
-                    <div class="card-name"><?php echo ucfirst($product->getName()); ?></div>
-                    <div class="card-price"><?php echo $product->getPrice() . " rub"; ?></div>
-                    <div class="card-wheel">
-                        <button>-</button>
-                        <span> <?php echo $cartProducts[$product->getId()]->getQuantity(); ?></span>
-                        <button>+</button>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-        <div class="checkout-total">
-            <h6>Total</h6>
-            <p><?php echo $sum = $product->getPrice(); ?></p>
+<form action="/order" method="POST">
+<div <?php $sum = 0; ?></div>
+<?php foreach ($products as $product): ?>
+    <div class="card-image"><img src="<?php echo $product->getImageLink(); ?>" alt=""></div>
+    <div class="card-details">
+        <div class="card-name"><?php echo ucfirst($product->getName()); ?></div>
+        <div class="card-price"><?php echo $product->getPrice() . " руб"; ?></div>
+        <div class="card-wheel">
+            <span> <?php $quantity = $cartProducts[$product->getId()]->getQuantity(); echo $quantity . " шт"; ?></span>
         </div>
     </div>
-</section>
+    <div <?php $sum += $product->getPrice()*$quantity; ?></div>
+<?php endforeach; ?>
+    <div class="checkout-total">
+        <h6>Итого</h6>
+        <p><?php echo $sum ." руб"; ?></p><a href="/order"><button type="submit" class="btn">Оформить заказ </button>
+    </div>
+</form>
 </body>
 
 <style>
@@ -33,26 +27,19 @@
     }
     body {
         font-family: "Poppins", sans-serif;
-        height: 100vh;
-        width: 70%;
-        margin: 0px auto;
+        height: 100%;
+        width: 100%;
+        margin: auto;
         padding: 50px 0px 0px;
         color: #4E5150;
     }
 
-    .card {
-        width: 100%;
-        display: flex;
-        column-gap: 15px;
-    }
-
     .card-image {
-        width: 35%;
+        width: 25%;
     }
 
     img {
         width: 100%;
-        object-fit: fill;
         border-radius: 10px;
     }
 
@@ -75,76 +62,49 @@
 
     span {
         color: #4E5150;
-        margin-left: 10px;
     }
 
     .card-wheel {
-        margin-top: 17px;
-        border: .2px solid #4e515085;
+        margin-top: auto;
+        border: 2px solid #4e515085;
         width: 90px;
-        padding: 8px 8px;
+        padding: 10px 40px;
         border-radius: 10px;
-        font-size: 12px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    button {
-        background: #E0E0E0;
-        color: #828282;
-        width: 15px;
-        height: 15px;
+        font-size: 20px;
         display: flex;
         justify-content: center;
-        align-items: center;
-        border: 0;
-        cursor: pointer;
-        border-radius: 3px;
-        font-weight: 500;
     }
 
     .checkout-total {
         display: flex;
-        font-size: 50px;
-        padding: 50px 0px;
+        font-size: 35px;
+        padding: 35px 0px;
         border-top: 1px solid #BDBDBD;
         justify-content: space-between;
     }
 
     p {
-        font-size: 50px;
-        font-weight: 500;
-    }
-
-    footer {
-        height: 5%;
-        color: #BDBDBD;
-        display: -ms-grid;
-        display: grid;
-        place-items: center;
-        font-size: 12px;
-    }
-
-    a {
-    text-decoration: none;
-    color: inherit;
-    }
-
-    main {
-    column-gap: 70px;
+        font-size: 35px;
+        font-weight: 10;
     }
 
     body {
         width: 92%;
     }
 
-    main {
-        flex-direction: column-reverse;
-        height: auto;
-        margin-bottom: 50px;
+    .btn {
+        display: flex;
+        background-color: lightgray;
+        color: black;
+        padding: 8px 0px;
+        font-size: 20px;
+        width: 100%;
+        opacity: 50;
     }
 
-    footer {
-    height: 10%;
+    .btn:hover {
+        color: maroon;
+        opacity: 100;
     }
+
 </style>

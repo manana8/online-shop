@@ -2,6 +2,7 @@
 
 use Controller\CartController;
 use Controller\MainController;
+use Controller\OrderController;
 use Controller\UserController;
 use Request\AddProductRequest;
 use Request\LoginRequest;
@@ -50,6 +51,12 @@ class APP
                 'method' => 'getCart',
             ]
         ],
+        '/order' => [
+            'POST' => [
+                'class' => OrderController::class,
+                'method' => 'getOrderForm',
+            ]
+        ]
     ];
     public function run(): void
     {
@@ -77,7 +84,7 @@ class APP
             }
 
         } else {
-            require_once './View/error404.html';
+            require_once '../View/error404.html';
         }
     }
 }

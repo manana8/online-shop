@@ -2,11 +2,12 @@
 
 class Autoloader
 {
-    public static function regisrtrate()
+    public static function registrate(string $dir)
     {
-        $autoload = function (string $className) {
+        $autoload = function (string $className) use ($dir) {
             $path = str_replace('\\', '/', $className);
-            $path = dirname(__DIR__) . "/" . $path . ".php";
+            $path = $dir . "/" . $path . ".php";
+//            print_r($dir); die();
 
             if (file_exists($path)) {
                 require_once $path;

@@ -35,10 +35,9 @@ class Product extends Model
 
     public static function getAllByIds(array $ids): array|null
     {
-        $ids = implode(', ', $ids);
-
-        $stmt = self::getPDO()->prepare("SELECT * FROM products WHERE id IN (:ids)");
-        $stmt->execute(['ids' => 2]);
+        $marks = substr(str_repeat('?, ', count($ids)), 0, -2);
+        $stmt = self::getPDO()->prepare("SELECT * FROM products WHERE id IN ($marks)"); // need ? = quantity array's elements
+        $stmt->execute($ids);
 
         $allProducts = $stmt->fetchAll();
 

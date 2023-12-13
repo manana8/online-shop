@@ -52,20 +52,27 @@ class CartController
     {
         session_start();
         //check users
-        $userId = $_SESSION['user_id'];
-        $cart = Cart::getOneByUserId($userId);
-        $cartId = $cart->getId();
-        $cartProducts = CartProduct::getAllByCartId($cartId);
-        $productIds = [];
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+            $cart = Cart::getOneByUserId($userId);
+            if (isset($cart)) {
+                $cartId = $cart->getId();
+                $cartProducts = CartProduct::getAllByCartId($cartId);
+                $productIds = [];
 
-        foreach ($cartProducts as $cartProduct) {
-            $productIds[] = $cartProduct->getProductId();
-        } // print_r($productIds); die();
+                foreach ($cartProducts as $cartProduct) {
+                    $productIds[] = $cartProduct->getProductId();
+                }
 
-        $products = Product::getAllByIds($productIds);
-//        print_r($products); die();
+                $products = Product::getAllByIds($productIds);
 
+                require_once '../View/cart.phtml';
+            } else {
+                echo 'The cart is empty :(';
+            }
 
-        require_once '../View/cart.phtml';
+        } else {
+            header('location: /login');
+        }
     }
 }
