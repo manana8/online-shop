@@ -4,18 +4,30 @@
         <p>Пожалуйста, заполните эту форму.</p>
         <hr>
         <label for="name"><b>Name</b></label>
+        <?php if (isset($errors['name'])): ?>
+            <label style="color: red"><?php echo $errors['name']; ?></label>
+        <?php endif; ?>
         <input type="text" placeholder="Enter Name" name="name" id="name" required>
         <label for="last-name"><b>Last name</b></label>
+        <?php if (isset($errors['last-name'])): ?>
+            <label style="color: red"><?php echo $errors['last-name']; ?></label>
+        <?php endif; ?>
         <input type="text" placeholder="Enter Last Name" name="last-name" id="last-name" required>
         <label for="number"><b>Number of phone</b></label>
+        <?php if (isset($errors['number'])): ?>
+            <label style="color: red"><?php echo $errors['number']; ?></label>
+        <?php endif; ?>
         <input type="text" placeholder="Enter Number Of Phone" name="number" id="number" required>
-        <label for="psw-repeat"><b>Repeat Password</b></label>
+        <label for="address"><b>Address</b></label>
+        <?php if (isset($errors['address'])): ?>
+            <label style="color: red"><?php echo $errors['address']; ?></label>
+        <?php endif; ?>
         <input type="text" placeholder="Enter Address" name="address" id="address" required>
         <hr>
-        <hr>
-        <p>The information about products</p>
-        <input type="text" placeholder="Enter Name" name="name" id="name" required>
-        <hr>
+<!--        <hr>-->
+<!--        <p>The information about products</p>-->
+<!--        <input type="text" placeholder="Enter Name" name="name" id="name" required>-->
+<!--        <hr>-->
         <button type="submit" class="orderbtn">Order</button>
     </div>
 </form>

@@ -1,5 +1,6 @@
 <body>
-<form action="/order" method="POST">
+<div class="container">
+    <h2>КОРЗИНА</h2>
 <div <?php $sum = 0; ?></div>
 <?php foreach ($products as $product): ?>
     <div class="card-image"><img src="<?php echo $product->getImageLink(); ?>" alt=""></div>
@@ -16,7 +17,6 @@
         <h6>Итого</h6>
         <p><?php echo $sum ." руб"; ?></p><a href="/order"><button type="submit" class="btn">Оформить заказ </button>
     </div>
-</form>
 </body>
 
 <style>

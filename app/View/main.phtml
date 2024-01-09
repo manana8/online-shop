@@ -1,18 +1,16 @@
 <body>
 <header>
-    <form action="/user-cart" method="POST">
-        <div class="header-cart">
-            <button type="submit" class="btn-cart">
-                <img class="img-cart" src="https://cdn-icons-png.flaticon.com/512/263/263142.png">
-            </button>
-        </div>
-    </form>
+    <div class="header-cart">
+        <a href="/user-cart"><button type="submit" class="btn-cart">
+            <img class="img-cart" src="https://cdn-icons-png.flaticon.com/512/263/263142.png">
+        </button></a>
+    </div>
 </header>
 <h3>Catalog</h3>
 <div class="container">
     <div class="card-deck">
         <?php foreach ($products as $product): ?>
-            <form action="/main-page" method="POST">
+            <form action="/main-page">
                 <div class="card text-center">
                     <div class="card-header">
                         Hit!

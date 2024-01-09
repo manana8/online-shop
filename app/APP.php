@@ -6,6 +6,7 @@ use Controller\OrderController;
 use Controller\UserController;
 use Request\AddProductRequest;
 use Request\LoginRequest;
+use Request\OrderRequest;
 use Request\RegistrateRequest;
 use Request\Request;
 
@@ -46,15 +47,20 @@ class APP
             ]
         ],
         '/user-cart' => [
-            'POST'=> [
+            'GET'=> [
                 'class' => CartController::class,
                 'method' => 'getCart',
             ]
         ],
         '/order' => [
-            'POST' => [
+            'GET' => [
                 'class' => OrderController::class,
                 'method' => 'getOrderForm',
+            ],
+            'POST' => [
+                'class' => OrderController::class,
+                'method' => 'postOrder',
+                'request' => OrderRequest::class,
             ]
         ]
     ];
@@ -63,8 +69,8 @@ class APP
         $requestUri = $_SERVER['REQUEST_URI'];
 
         if (isset($this->routes[$requestUri])) {
-            $requestMethod = $_SERVER['REQUEST_METHOD'];
-            $routeMethods = $this->routes[$requestUri]; //GET or POST
+            $requestMethod = $_SERVER['REQUEST_METHOD'];//GET or POST
+            $routeMethods = $this->routes[$requestUri];
             if (isset($routeMethods[$requestMethod])) {
                 $handler = $routeMethods[$requestMethod];
                 $class = $handler['class'];

@@ -8,7 +8,7 @@
         <?php if (isset($errors['name'])): ?>
             <label style="color: red"><?php echo $errors['name']; ?></label>
         <?php endif; ?>
-        <input type="text" placeholder="Enter Name" name="name" id="name" required>
+        <input type="text" placeholder="Enter Name" name="name" id="name">
 
         <label for="email"><b>Email</b></label>
         <?php if (isset($errors['email'])): ?>
@@ -29,7 +29,7 @@
         <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
         <hr>
 
-        <p>By creating an account you agree to our <a href="/main-page">Terms & Privacy</a>.</p>
+        <p>By creating an account you agree to our Terms & Privacy.</p>
         <button type="submit" class="registerbtn">Register</button>
     </div>
 
