@@ -41,6 +41,24 @@ class CartProduct extends Model
         return $arr;
     }
 
+    public static function getAllByUserId(int $userId): ?array
+    {
+        $stmt = self::getPDO()->prepare("SELECT * FROM cart_products INNER JOIN carts ON cart_products.cart_id = carts.id WHERE user_id=:user_id ");
+        $stmt->execute(['user_id' => $userId]);
+
+        $datas = $stmt->fetchAll();
+
+        if (empty($datas)) {
+            return null;
+        }
+
+        $arr = [];
+        foreach ($datas as $data) {
+            $arr[$data['product_id']] = new self($data['id'], $data['cart_id'], $data['product_id'], $data['quantity']);
+        }
+        return $arr;
+    }
+
     public function getId(): int
     {
         return $this->id;

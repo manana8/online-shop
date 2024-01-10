@@ -5,6 +5,7 @@ namespace Controller;
 use Model\Cart;
 use Model\CartProduct;
 use Model\Order;
+use Model\OrderProduct;
 use Model\Product;
 use Request\OrderRequest;
 
@@ -29,25 +30,26 @@ class OrderController
                 $numberOfPhone = $requestData['number'];
                 $address = $requestData['address'];
 
-                $order = Order::getOneByUserId($userId);
+                Order::create($userId, $name, $lastName, $numberOfPhone, $address);
 
-                if (empty($order)) {
-                    Order::create($userId, $name, $lastName, $numberOfPhone, $address);
-
-                    $order = Order::getOneByUserId($userId);
-                }
-
-                $cart = Cart::getOneByUserId($userId);
-                $cartId = $cart->getId();
-                $cartProducts = CartProduct::getAllByCartId($cartId);
-
+//                $cart = Cart::getOneByUserId($userId);
+//                $cartId = $cart->getId();
+                $cartProducts = CartProduct::getAllByUserId($userId); // ALl products in the user's cart
                 $productIds = [];
-
                 foreach ($cartProducts as $cartProduct) {
                     $productIds[] = $cartProduct->getProductId();
                 }
 
-                $products = Product::getAllByIds($productIds);
+                $products = Product::getAllByIds($productIds); // All about user's products exclude quantity
+                foreach ($cartProducts as $cartProduct) {
+                    if (isset($products[$cartProduct->getProductId()]))
+                    {
+                        $product = $products[$cartProduct->getProductId()];
+                        $prices[$product->getId()] = $product->getPrice() * $cartProduct->getQuantity();
+                    }
+                }
+
+                OrderProduct::create($product->getId());
 
                 header('location: /main-page');
             }

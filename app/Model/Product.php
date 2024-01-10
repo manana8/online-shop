@@ -47,7 +47,7 @@ class Product extends Model
 
         $arr = [];
         foreach ($allProducts as $product) {
-            $arr[] = new self($product['id'], $product['name'], $product['price'], $product['image_link']);
+            $arr[$product['id']] = new self($product['id'], $product['name'], $product['price'], $product['image_link']);
         }
         return $arr;
     }
