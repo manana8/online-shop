@@ -19,14 +19,12 @@ class OrderProduct extends Model
         $this->price = $price;
     }
 
-    public static function create(int $orderId, array $products, array $price): void
+    public static function create(int $orderId, array $cartProducts, array $prices): void
     {
-        $stmt = self::getPDO()->prepare("INSERT INTO order_products (order_id, product_id, quantity, price) VALUES (:order_id, :product_id, :quantity, :price)");
-
         foreach ($cartProducts as $cartProduct) {
-            $stmt->execute(['order_id' => $orderId, 'product_id' => $cartProduct->getProductId(), 'quantity' => $quantity, 'price' => $cartProduct->getPrice()]);
+            $stmt = self::getPDO()->prepare("INSERT INTO order_products (order_id, product_id, quantity, price) VALUES (:order_id, :product_id, :quantity, :price)");
+            $stmt->execute(['order_id' => $orderId, 'product_id' => $cartProduct->getProductId(), 'quantity' => $cartProduct->getQuantity(), 'price' => $prices[$cartProduct->getProductId()]]);
         }
-
     }
 
     public static function getAllByOrderId(int $orderId): array | null
@@ -42,7 +40,7 @@ class OrderProduct extends Model
 
         $arr = [];
         foreach ($datas as $data) {
-            $arr[$data['product_id']] = new self($data['id'], $data['cart_id'], $data['product_id'], $data['quantity'], $data['price']);
+            $arr[$data['product_id']] = new self($data['id'], $data['order_id'], $data['product_id'], $data['quantity'], $data['price']);
         }
         return $arr;
     }

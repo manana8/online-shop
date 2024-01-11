@@ -62,6 +62,12 @@ class APP
                 'method' => 'postOrder',
                 'request' => OrderRequest::class,
             ]
+        ],
+        '/order-product' => [
+            'GET' => [
+                'class' => OrderController::class,
+                'method' => 'getOrderProduct',
+            ]
         ]
     ];
     public function run(): void

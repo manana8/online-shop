@@ -58,17 +58,22 @@ class CartController
             if (isset($cart)) {
                 $cartId = $cart->getId();
                 $cartProducts = CartProduct::getAllByCartId($cartId);
-                $productIds = [];
+                if (isset($cartProducts)) {
+                    $productIds = [];
 
-                foreach ($cartProducts as $cartProduct) {
-                    $productIds[] = $cartProduct->getProductId();
+                    foreach ($cartProducts as $cartProduct) {
+                        $productIds[] = $cartProduct->getProductId();
+                    }
+
+                    $products = Product::getAllByIds($productIds);
+
+                    require_once '../View/cart.phtml';
+                } else {
+                    echo 'The cart is empty :(';
                 }
 
-                $products = Product::getAllByIds($productIds);
-
-                require_once '../View/cart.phtml';
             } else {
-                echo 'The cart is empty :(';
+                echo 'The cart not founded :(';
             }
 
         } else {

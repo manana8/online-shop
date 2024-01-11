@@ -32,9 +32,10 @@ class OrderController
 
                 Order::create($userId, $name, $lastName, $numberOfPhone, $address);
 
-//                $cart = Cart::getOneByUserId($userId);
-//                $cartId = $cart->getId();
-                $cartProducts = CartProduct::getAllByUserId($userId); // ALl products in the user's cart
+                $cart = Cart::getOneByUserId($userId);
+                $cartId = $cart->getId();
+//                $cartProducts = CartProduct::getAllByUserId($userId); // The application 'INNER JOIN'
+                $cartProducts = CartProduct::getAllByCartId($cartId); // ALl products in the user's cart
                 $productIds = [];
                 foreach ($cartProducts as $cartProduct) {
                     $productIds[] = $cartProduct->getProductId();
@@ -48,12 +49,38 @@ class OrderController
                         $prices[$product->getId()] = $product->getPrice() * $cartProduct->getQuantity();
                     }
                 }
+                $orderId = Order::getOneByUserId($userId)->getId();
 
-                OrderProduct::create($product->getId());
+                OrderProduct::create($orderId, $cartProducts, $prices);
+                CartProduct::clear($cartId);
 
-                header('location: /main-page');
+                header('location: /order-product');
+            } else {
+                header('location: /login');
             }
         }
         require_once '../View/order.phtml';
+    }
+
+    public function getOrderProduct()
+    {
+        session_start();
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+            $order = Order::getOneByUserId($userId);
+            $orderId = $order->getId();
+            $orderProducts = OrderProduct::getAllByOrderId($orderId);
+//            $orderProducts = OrderProduct::getAllByUserId($userId);
+
+            foreach ($orderProducts as $orderProduct) {
+                $productIds[] = $orderProduct->getProductId();
+            }
+
+            $products = Product::getAllByIds($productIds);
+
+            require_once '../View/order-product.phtml';
+        } else {
+            header('location: /login');
+        }
     }
 }

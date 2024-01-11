@@ -43,7 +43,7 @@ class CartProduct extends Model
 
     public static function getAllByUserId(int $userId): ?array
     {
-        $stmt = self::getPDO()->prepare("SELECT * FROM cart_products INNER JOIN carts ON cart_products.cart_id = carts.id WHERE user_id=:user_id ");
+        $stmt = self::getPDO()->prepare("SELECT * FROM cart_products INNER JOIN carts ON cart_products.cart_id = carts.id WHERE user_id=:user_id");
         $stmt->execute(['user_id' => $userId]);
 
         $datas = $stmt->fetchAll();
@@ -57,6 +57,12 @@ class CartProduct extends Model
             $arr[$data['product_id']] = new self($data['id'], $data['cart_id'], $data['product_id'], $data['quantity']);
         }
         return $arr;
+    }
+
+    public static function clear(int $cartId): void
+    {
+        $stmt = self::getPDO()->prepare("DELETE FROM cart_products WHERE cart_id=:cart_id");
+        $stmt->execute(['cart_id' => $cartId]);
     }
 
     public function getId(): int
