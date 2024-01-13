@@ -44,6 +44,12 @@ class OrderProduct extends Model
         }
         return $arr;
     }
+
+    public static function clear(int $orderId): void
+    {
+        $stmt = self::getPDO()->prepare("DELETE FROM order_products WHERE order_id=:ordeer_id");
+        $stmt->execute(['order_id' => $orderId]);
+    }
     public function getId(): int
     {
         return $this->id;
