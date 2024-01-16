@@ -89,7 +89,19 @@ class APP
                     $requestClass = $handler['request'];
                     $request = new $requestClass($requestMethod, $_POST);
                 }
-                $obj->$method($request);
+
+                try {
+                    $obj->$method($request);
+                } catch (Throwable $throwable) {
+                    $file = __DIR__ . '/Storage/logs/error.txt';
+                    $data = date('d.m.Y h:i:s');
+                    $message = $throwable->getMessage() . '. Внимание на строку ' . $throwable->getLine() . ' в файле ' . $throwable->getFile();
+
+                        file_put_contents($file, $data . "\n" . $message . ";\n", FILE_APPEND);
+
+                    require_once '../View/error500.html';
+                }
+
 
             } else {
                 echo "The method $requestMethod for $requestUri is not supported!";

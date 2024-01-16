@@ -37,6 +37,9 @@ class UserController
 
     public function getLoginForm()
     {
+        $a =5;
+        $b =0;
+        echo $a / $b;
         require_once '../View/login.phtml';
     }
 

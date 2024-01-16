@@ -1,0 +1,2 @@
+16.01.2024 03:03:23
+Division by zero. Внимание на строку 42 в файле /var/www/html/app/Controller/UserController.php;

@@ -2,9 +2,6 @@
 
 namespace Controller;
 
-use Model\Cart;
-use Model\CartProduct;
-use Model\Model;
 use Model\Order;
 use Model\OrderProduct;
 use Model\Product;
@@ -32,41 +29,7 @@ class OrderController
                 $numberOfPhone = $requestData['number'];
                 $address = $requestData['address'];
 
-                OrderService::create($userId, $name, $lastName, $numberOfPhone, $address);
-
-//                $cart = Cart::getOneByUserId($userId);
-//                $cartId = $cart->getId();
-////                $cartProducts = CartProduct::getAllByUserId($userId); // The application 'INNER JOIN'
-//                $cartProducts = CartProduct::getAllByCartId($cartId); // ALl products in the user's cart
-//                $productIds = [];
-//                foreach ($cartProducts as $cartProduct) {
-//                    $productIds[] = $cartProduct->getProductId();
-//                }
-//
-//                $products = Product::getAllByIds($productIds); // All about user's products exclude quantity
-//                foreach ($cartProducts as $cartProduct) {
-//                    if (isset($products[$cartProduct->getProductId()]))
-//                    {
-//                        $product = $products[$cartProduct->getProductId()];
-//                        $prices[$product->getId()] = $product->getPrice() * $cartProduct->getQuantity();
-//                    }
-//                }
-//                // The realization THE TRANSACTION
-//                $pdo = Model::getPDO();
-//                $pdo->beginTransaction();
-//
-//                try {
-//                    Order::create($userId, $name, $lastName, $numberOfPhone, $address);
-//                    $orderId = Order::getOneByUserId($userId)->getId();
-//
-//                    OrderProduct::create($orderId, $cartProducts, $prices);
-//                    CartProduct::clear($cartId);
-//                } catch (\Throwable $throwable) {
-//                    $throwable->getMessage();
-//                    $pdo->rollBack(); // Finish the transaction with exceptions that is errors
-//                }
-//
-//                $pdo->commit(); // Finish the transaction wo errors
+                OrderService::create($userId, $name, $lastName, $numberOfPhone, $address); // The static method good or bad???
 
                 header('location: /order-product');
             } else {
