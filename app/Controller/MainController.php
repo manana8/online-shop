@@ -3,13 +3,20 @@
 namespace Controller;
 
 use Model\Product;
+use Service\AuthenticationService;
 
 class MainController
 {
+    private AuthenticationService $authenticationService;
+
+    public function __construct(AuthenticationService $authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+    }
     public function mainPage(): void
     {
-        session_start();
-        if (isset($_SESSION['user_id'])) {
+        $user = $this->authenticationService->getCurrentUser();
+        if (!empty($user)) {
 //            require_once '../Model/Product.php';
 //            $mainModel = new Product();
             $products = Product::getAll();

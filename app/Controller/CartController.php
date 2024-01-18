@@ -8,20 +8,28 @@ use Model\CartProduct;
 use Model\Product;
 use Request\AddProductRequest;
 use Request\Request;
+use Service\AuthenticationService;
 
 //import class
 
 class CartController
 {
+    private AuthenticationService $authenticationService;
+
+    public function __construct(AuthenticationService $authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+    }
+
     public function addProduct(AddProductRequest $request): void
     {
         $errors = $request->validate();
 
         if (empty($errors)) {
-            session_start();
-            if (isset($_SESSION['user_id'])) {
+            $user = $this->authenticationService->getCurrentUser();
+            if (!empty($user)) {
                 $requestData = $request->getBody();
-                $userId = $_SESSION['user_id'];
+                $userId = $user->getId();
                 $productId = $requestData['product_id'];
                 $quantity = $requestData['quantity'];
 
@@ -50,11 +58,12 @@ class CartController
 
     public function getCart(): void
     {
-        session_start();
+        $user = $this->authenticationService->getCurrentUser();
+//        session_start();
         //check users
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
-            $cart = Cart::getOneByUserId($userId);
+        if (!empty($user)) {
+//            $userId = $_SESSION['user_id'];
+            $cart = Cart::getOneByUserId($user->getId());
             if (isset($cart)) {
                 $cartId = $cart->getId();
                 $cartProducts = CartProduct::getAllByCartId($cartId);

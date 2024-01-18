@@ -55,6 +55,20 @@ class User extends Model
         return new self($data['id'], $data['name'], $data['email'], $data['password']);
     }
 
+    public static function getOneById(int $id): User|null
+    {
+        $stmt = self::getPDO()->prepare("SELECT * FROM users WHERE id=:id");
+        $stmt->execute(['id' => $id]);
+
+        $data = $stmt->fetch();
+
+        if (empty($data)) {
+            return null;
+        }
+
+        return new self($data['id'], $data['name'], $data['email'], $data['password']);
+    }
+
     public function getId(): int
     {
         return $this->id;

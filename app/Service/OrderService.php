@@ -11,7 +11,7 @@ use Model\Product;
 
 class OrderService
 {
-    public static function create(int $userId, string $name, string $lastName, string $numberOfPhone, string $address): void
+    public function create(int $userId, string $name, string $lastName, string $numberOfPhone, string $address): void
     {
         $cart = Cart::getOneByUserId($userId);
         $cartId = $cart->getId();

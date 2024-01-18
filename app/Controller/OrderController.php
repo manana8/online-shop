@@ -6,10 +6,19 @@ use Model\Order;
 use Model\OrderProduct;
 use Model\Product;
 use Request\OrderRequest;
+use Service\AuthenticationService;
 use Service\OrderService;
 
 class OrderController
 {
+    private OrderService $orderService; // If one class use object of other class then this object necessary write down as property because this object may useful in other method.
+    private AuthenticationService $authenticationService;
+
+    public function __construct(OrderService $orderService, AuthenticationService $authenticationService)
+    {
+        $this->orderService = $orderService;
+        $this->authenticationService = $authenticationService;
+    }
     public function getOrderForm()
     {
         require_once '../View/order.phtml';
@@ -19,9 +28,9 @@ class OrderController
         $errors = $request->validate();
 
         if (empty($errors)) {
-            session_start();
-            if (isset($_SESSION['user_id'])) {
-                $userId = $_SESSION['user_id'];
+            $user = $this->authenticationService->getCurrentUser();
+            if (!empty($user)) {
+                $userId = $user->getId();
 
                 $requestData = $request->getBody();
                 $name = $requestData['name'];
@@ -29,7 +38,8 @@ class OrderController
                 $numberOfPhone = $requestData['number'];
                 $address = $requestData['address'];
 
-                OrderService::create($userId, $name, $lastName, $numberOfPhone, $address); // The static method good or bad???
+//                $orderService = new OrderService; // OrderController = f(OrderService).
+                $this->orderService->create($userId, $name, $lastName, $numberOfPhone, $address); // инъекция зависимостей (The static method good or bad???)
 
                 header('location: /order-product');
             } else {
@@ -41,9 +51,9 @@ class OrderController
 
     public function getOrderProduct()
     {
-        session_start();
-        if (isset($_SESSION['user_id'])) {
-            $userId = $_SESSION['user_id'];
+        $user = $this->authenticationService->getCurrentUser();
+        if (!empty($user)) {
+            $userId = $user->getId();
             $order = Order::getOneByUserId($userId);
             $orderId = $order->getId();
             $orderProducts = OrderProduct::getAllByOrderId($orderId);

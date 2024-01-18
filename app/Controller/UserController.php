@@ -5,7 +5,6 @@ namespace Controller;
 use Model\User;
 use Request\LoginRequest;
 use Request\RegistrateRequest;
-use Request\Request;
 
 class UserController
 {
@@ -37,9 +36,9 @@ class UserController
 
     public function getLoginForm()
     {
-        $a =5;
-        $b =0;
-        echo $a / $b;
+//        $a =5;
+//        $b =0;
+//        echo $a / $b;
         require_once '../View/login.phtml';
     }
 
