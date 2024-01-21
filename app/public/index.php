@@ -8,29 +8,42 @@ use Request\AddProductRequest;
 use Request\LoginRequest;
 use Request\OrderRequest;
 use Request\RegistrateRequest;
+use Service\Authentication\AuthenticationInterface;
+use Service\Authentication\SessionAuthenticationService;
+use Service\OrderService;
 
 require_once '../Autoloader.php';
 
 Autoloader::registrate(dirname(__DIR__));
 
 $container = new Container();
-$container->set(OrderController::class, function () {
-    $orderService = new \Service\OrderService();
-    $authenticationService = new \Service\AuthenticationService();
+$container->set(OrderController::class, function (Container $container) {
+    $orderService = new OrderService();
+    $authenticationService = $container->get(AuthenticationInterface::class);
 
     return new OrderController($orderService, $authenticationService);
 });
 
-$container->set(CartController::class, function () {
-    $authenticationService = new \Service\AuthenticationService();
+$container->set(CartController::class, function (Container $container) {
+    $authenticationService = $container->get(AuthenticationInterface::class);
 
     return new CartController($authenticationService);
 });
 
-$container->set(MainController::class, function () {
-    $authenticationService = new \Service\AuthenticationService();
+$container->set(MainController::class, function (Container $container) {
+    $authenticationService = $container->get(AuthenticationInterface::class);
 
     return new MainController($authenticationService);
+});
+
+$container->set(UserController::class, function (Container $container) {
+    $authenticationService = $container->get(AuthenticationInterface::class);
+
+    return new UserController($authenticationService);
+});
+
+$container->set(AuthenticationInterface::class, function () {
+    return new SessionAuthenticationService(); // Here we can change on Cookie Authentication Service
 });
 
 $app = new APP();

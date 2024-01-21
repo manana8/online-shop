@@ -8,7 +8,7 @@ class Container // список зависимостей
 //    {
 //        return isset($this->services[$className]);
 //    }
-    public function set(string $className, callable $callback)
+    public function set(string $className, callable $callback): void
     {
         $this->services[$className] = $callback;
     }
@@ -21,6 +21,6 @@ class Container // список зависимостей
 
         $callback = $this->services[$className];
 
-        return $callback();
+        return $callback($this); //callback function in index.php has argument such as Container $container, so we should peredavat' argument when calling function. $this is the $container
     }
 }

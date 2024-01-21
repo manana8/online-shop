@@ -2,21 +2,20 @@
 
 namespace Controller;
 
-use Couchbase\View;
 use Model\Cart;
 use Model\CartProduct;
 use Model\Product;
 use Request\AddProductRequest;
-use Request\Request;
-use Service\AuthenticationService;
+use Service\Authentication\AuthenticationInterface;
+use Service\Authentication\SessionAuthenticationService;
 
 //import class
 
 class CartController
 {
-    private AuthenticationService $authenticationService;
+    private AuthenticationInterface $authenticationService;
 
-    public function __construct(AuthenticationService $authenticationService)
+    public function __construct(AuthenticationInterface $authenticationService)
     {
         $this->authenticationService = $authenticationService;
     }
@@ -28,65 +27,58 @@ class CartController
         if (empty($errors)) {
             $user = $this->authenticationService->getCurrentUser();
             if (!empty($user)) {
-                $requestData = $request->getBody();
-                $userId = $user->getId();
-                $productId = $requestData['product_id'];
-                $quantity = $requestData['quantity'];
-
-                //$pdo = new PDO("pgsql:host=db;dbname=postgres", "dbuser", "dbpwd");
-//                    require_once '../Model/Cart.php';
-//                    $cartModel = new Cart();
-                $cart = Cart::getOneByUserId($userId);
-
-                if (empty($cart)) {
-                    Cart::create($userId);
-
-                    $cart = Cart::getOneByUserId($userId);
-                }
-
-//                    require_once '../Model/CartProduct.php';
-//                    $cartProductModel = new CartProduct();
-//                    $cartProductModel->create($cart, $productId, $quantity);
-                CartProduct::create($cart->getId(), $productId, $quantity);
-
-                header('location: /main-page');
-            } else {
                 header('location: /login');
             }
+            $requestData = $request->getBody();
+            $userId = $user->getId();
+            $productId = $requestData['product_id'];
+            $quantity = $requestData['quantity'];
+
+            //$pdo = new PDO("pgsql:host=db;dbname=postgres", "dbuser", "dbpwd");
+//          require_once '../Model/Cart.php';
+//          $cartModel = new Cart();
+            $cart = Cart::getOneByUserId($userId);
+
+            if (empty($cart)) {
+                Cart::create($userId);
+
+                $cart = Cart::getOneByUserId($userId);
+            }
+
+            CartProduct::create($cart->getId(), $productId, $quantity);
+
+            header('location: /main-page');
         }
     }
 
     public function getCart(): void
     {
         $user = $this->authenticationService->getCurrentUser();
-//        session_start();
-        //check users
-        if (!empty($user)) {
-//            $userId = $_SESSION['user_id'];
-            $cart = Cart::getOneByUserId($user->getId());
-            if (isset($cart)) {
-                $cartId = $cart->getId();
-                $cartProducts = CartProduct::getAllByCartId($cartId);
-                if (isset($cartProducts)) {
-                    $productIds = [];
 
-                    foreach ($cartProducts as $cartProduct) {
-                        $productIds[] = $cartProduct->getProductId();
-                    }
+        if (empty($user)) {
+            header('location: /login');
+        }
 
-                    $products = Product::getAllByIds($productIds);
+        $cart = Cart::getOneByUserId($user->getId());
+        if (isset($cart)) {
+            $cartId = $cart->getId();
+            $cartProducts = CartProduct::getAllByCartId($cartId);
+            if (isset($cartProducts)) {
+                $productIds = [];
 
-                    require_once '../View/cart.phtml';
-                } else {
-                    echo 'The cart is empty :(';
+                foreach ($cartProducts as $cartProduct) {
+                    $productIds[] = $cartProduct->getProductId();
                 }
 
+                $products = Product::getAllByIds($productIds);
+
+                require_once '../View/cart.phtml';
             } else {
-                echo 'The cart not founded :(';
+                echo 'The cart is empty :(';
             }
 
         } else {
-            header('location: /login');
+            echo 'The cart not founded :(';
         }
     }
 }

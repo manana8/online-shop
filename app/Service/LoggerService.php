@@ -15,8 +15,8 @@ class LoggerService
         return file_put_contents($file, $data . "\n" . $message . ";\n", FILE_APPEND);
     }
 
-//    public function warning()
-//    {
-//
-//    }
+    public function warning()
+    {
+        error_reporting(E_WARNING);
+    }
 }

@@ -5,9 +5,17 @@ namespace Controller;
 use Model\User;
 use Request\LoginRequest;
 use Request\RegistrateRequest;
+use Service\Authentication\AuthenticationInterface;
 
 class UserController
 {
+    private readonly AuthenticationInterface $authenticationService;
+
+    public function __construct(AuthenticationInterface $authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+    }
+
     public function getRegistrateForm()
     {
         require_once '../View/registrate.phtml';
@@ -36,9 +44,6 @@ class UserController
 
     public function getLoginForm()
     {
-//        $a =5;
-//        $b =0;
-//        echo $a / $b;
         require_once '../View/login.phtml';
     }
 
@@ -52,24 +57,13 @@ class UserController
             $login = $requestData['login'];
             $password = $requestData['password'];
 
-//                require_once '../Model/User.php';
-//                $loginModel = new User();
-//                $data = $loginModel->getOneByEmail($login);
-            $data = User::getOneByEmail($login);
-//                print_r($data); die();
+            $result = $this->authenticationService->login($login, $password);
 
-            if (empty($data)) {
-                $errors['login'] = 'Неправильный логин или пароль';
-            } else {
-                if (password_verify($password, $data->getPassword())) {
-                    //setcookie('user_id', $data['id']);
-                    session_start();
-                    $_SESSION['user_id'] = $data->getId();
-                    header('location: /main-page');
-                } else {
-                    $errors['password'] = 'Неправильный логин или пароль';
-                }
+            if ($result) {
+                header('location: /main-page');
             }
+
+            $errors['login'] = 'Неправильный логин или пароль';
 
         }
         require_once '../View/login.phtml';
