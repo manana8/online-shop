@@ -7,38 +7,35 @@
     </div>
 </header>
 <h3>Catalog</h3>
-<div class="container">
-    <div class="card-deck">
-        <?php foreach ($products as $product): ?>
-            <form action="" method="post" class="addProductForm">
+<form method="POST" onsubmit="return false" id="addProductForm">
+    <div class="container">
+        <div class="card-deck">
+            <?php foreach ($products as $product): ?>
                 <div class="card text-center">
                     <div class="card-header">
-                        Hit!
-                        <a href="#">
-                            <img class="card-img-top" src=<?php echo $product->getImageLink(); ?> alt="Card image">
-                            <div class="card-body">
-                                <p class="card-text text-muted"><?php echo ucfirst($product->getName()); ?> </p>
-                                <a><h5 class="card-title">Description!</h5></a>
-                                <div class="card-footer">
-                                    <?php echo $product->getPrice() . " p"; ?><br>
-                                    <label>
-                                        <input type="text" placeholder="product_id" name="product_id" hidden="" value="<?php echo $product->getId(); ?>">
-                                        <input type="text" placeholder="quantity" name="quantity">
-                                    </label>
-                                    <input type="submit" class="btn" value='Add to cart'>
-                                </div>
+                        <img class="card-img-top" src=<?php echo $product->getImageLink(); ?> alt="Card image">
+                        <div class="card-body">
+                            <p class="card-text text-muted"><?php echo ucfirst($product->getName()); ?> </p>
+                            <h5 class="card-title">Description!</h5>
+                            <div class="card-footer">
+                                <?php echo $product->getPrice() . " p"; ?><br>
+                                <label>
+                                    <input type="text" placeholder="product_id" name="product_id" hidden="" value="<?php echo $product->getId(); ?>">
+                                    <input type="text" placeholder="quantity" name="quantity" class="quantity">
+                                </label>
+                                <button type="submit" class="btn">Add to cart</button>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
-            </form>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
     </div>
-</div>
+</form>
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
-    $(document).ready(function() {
+    $("document").ready(function() {
         $('#addProductForm').submit(function() {
             $.ajax({
                 type: "POST",
@@ -47,8 +44,9 @@
                 data: $(this).serialize(),
                 success: function() {
                     console.log('done');
+                    $('input.quantity').val('');
                 }
-            });
+            })
         });
     });
 </script>
