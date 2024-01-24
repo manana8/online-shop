@@ -8,6 +8,7 @@ use Model\Product;
 use Request\AddProductRequest;
 use Service\Authentication\AuthenticationInterface;
 use Service\Authentication\SessionAuthenticationService;
+use Service\LoggerService;
 
 //import class
 
@@ -22,6 +23,8 @@ class CartController
 
     public function addProduct(AddProductRequest $request): void
     {
+//        $logger = new LoggerService();
+//        $logger->error('Test');
         $errors = $request->validate();
 
         if (empty($errors)) {

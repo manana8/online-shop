@@ -7,11 +7,12 @@
     </div>
 </header>
 <h3>Catalog</h3>
-<form method="POST" onsubmit="return false" id="addProductForm">
+
     <div class="container">
         <div class="card-deck">
             <?php foreach ($products as $product): ?>
                 <div class="card text-center">
+                    <form method="POST" onsubmit="return false" class="addProductForm">
                     <div class="card-header">
                         <img class="card-img-top" src=<?php echo $product->getImageLink(); ?> alt="Card image">
                         <div class="card-body">
@@ -27,20 +28,21 @@
                             </div>
                         </div>
                     </div>
+                    </form>
                 </div>
             <?php endforeach; ?>
         </div>
     </div>
-</form>
+
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
     $("document").ready(function() {
-        $('#addProductForm').submit(function() {
+        $('.addProductForm').submit(function() {
             $.ajax({
                 type: "POST",
-                url: "/main-page",
-                dataType: 'html',
+                url: "/add-product",
+                // dataType: 'html',
                 data: $(this).serialize(),
                 success: function() {
                     console.log('done');

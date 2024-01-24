@@ -21,7 +21,7 @@ function routes(APP $app, $container): APP
     $app->post('/registrate', UserController::class, 'postRegistrate', RegistrateRequest::class);
 
     $app->get('/main-page', MainController::class, 'mainPage');
-    $app->post('/main-page', CartController::class, 'addProduct', AddProductRequest::class);
+    $app->post('/add-product', CartController::class, 'addProduct', AddProductRequest::class);
 
     $app->get('/user-cart', CartController::class, 'getCart');
 
